@@ -1,0 +1,8 @@
+{
+  "server.port": 8080,
+  "server.context-path": "/xxl-job-admin",
+  "datasource.url": "root:root@tcp(127.0.0.1:3306)/xxl_job",
+  "datasource.username": "root",
+  "datasource.password": "root",
+  "datasource.driver": "mysql"
+}
