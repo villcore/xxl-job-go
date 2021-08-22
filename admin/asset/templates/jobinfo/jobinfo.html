@@ -26,6 +26,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script>
+        var base_url = '{{ .contextPath }}';
+        var I18n = JSON.parse('{{ .I18nJson }}');
+    </script>
     <!-- pace -->
     <link rel="stylesheet" href="{{ .contextPath }}/static/adminlte/bower_components/PACE/themes/blue/pace-theme-flash.css">
 
@@ -116,25 +120,29 @@
             </ul>
         </section>
     </aside>
-	
+
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>{{ .I18n.jobinfo_name }}</h1>
 		</section>
-		
+
 		<!-- Main content -->
 	    <section class="content">
-	    
+
 	    	<div class="row">
 	    		<div class="col-xs-3">
 	              	<div class="input-group">
 	                	<span class="input-group-addon">{{ .I18n.jobinfo_field_jobgroup }}</span>
                 		<select class="form-control" id="jobGroup" >
-<!--                			<#list JobGroupList as group>-->
-<!--                				<option value="${group.id}" <#if jobGroup==group.id>selected</#if> >${group.title}</option>-->
-<!--                			</#list>-->
+                            {{ range $index, $elem := .jobGroupList }}
+                                {{ if eq $elem.Id $.jobGroup }}
+                                    <option value="{{ $elem.Id }}" selected > {{ $elem.Title }}</option>
+                                {{ else }}
+                                    <option value="{{ $elem.Id }}"> {{ $elem.Title }}</option>
+                                {{ end }}}
+                            {{ end }}}
 	                  	</select>
 	              	</div>
 	            </div>
@@ -169,7 +177,7 @@
 	            	<button class="btn btn-block btn-success add" type="button">{{ .I18n.jobinfo_field_add }}</button>
 	            </div>
           	</div>
-	    	
+
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="box">
@@ -203,9 +211,17 @@
 			</div>
 	    </section>
 	</div>
-	
+
 	<!-- footer -->
-	<@netCommon.commonFooter />
+    <footer class="main-footer">
+        Powered by <b>XXL-JOB-GO</b> {{ .I18n.admin_version }}
+        <div class="pull-right hidden-xs">
+            <strong>Copyright &copy; 2021&nbsp;
+                <a href="https://www.xuxueli.com/" target="_blank" >villcore</a>
+                <a href="https://github.com/xuxueli/xxl-job" target="_blank" >github</a>
+            </strong><!-- All rights reserved. -->
+        </div>
+    </footer>
 </div>
 
 <!-- job新增.模态框 -->
@@ -213,14 +229,14 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-            	<h4 class="modal-title" >${I18n.jobinfo_field_add}</h4>
+            	<h4 class="modal-title" >{{ .I18n.jobinfo_field_add }}</h4>
          	</div>
          	<div class="modal-body">
 				<form class="form-horizontal form" role="form" >
 
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_base}</p>    <!-- 基础信息 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_base }}</p>    <!-- 基础信息 -->
 					<div class="form-group">
-						<label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_jobgroup}<font color="red">*</font></label>
+						<label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_jobgroup }}<font color="red">*</font></label>
 						<div class="col-sm-4">
 							<select class="form-control" name="jobGroup" >
 <!--		            			<#list JobGroupList as group>-->
@@ -229,20 +245,20 @@
 		                  	</select>
 						</div>
 
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_jobdesc}<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="jobDesc" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_jobdesc}" maxlength="50" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_jobdesc }}<font color="red">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="jobDesc" placeholder="{{ .I18n.system_please_input}} {{ .I18n.jobinfo_field_jobdesc }}" maxlength="50" ></div>
 					</div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_author}<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="author" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_author}" maxlength="50" ></div>
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_alarmemail}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="alarmEmail" placeholder="${I18n.jobinfo_field_alarmemail_placeholder}" maxlength="100" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_author }}<font color="red">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="author" placeholder="{{ .I18n.system_please_input }} {{ .I18n.jobinfo_field_author }}" maxlength="50" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_alarmemail }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="alarmEmail" placeholder="{{ .I18n.jobinfo_field_alarmemail_placeholder }}" maxlength="100" ></div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_schedule}</p>    <!-- 调度 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_schedule }}</p>    <!-- 调度 -->
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.schedule_type}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.schedule_type }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control scheduleType" name="scheduleType" >
 <!--                                <#list ScheduleTypeEnum as item>-->
@@ -256,23 +272,23 @@
                         </div>
                         <div class="schedule_conf schedule_conf_CRON" >
                             <label for="lastname" class="col-sm-2 control-label">Cron<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_CRON" placeholder="${I18n.system_please_input}Cron" maxlength="128" ></div>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_CRON" placeholder="{{ .I18n.system_please_input }}Cron" maxlength="128" ></div>
                         </div>
                         <div class="schedule_conf schedule_conf_FIX_RATE" style="display: none" >
-                            <label for="lastname" class="col-sm-2 control-label">${I18n.schedule_type_fix_rate}<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_RATE" placeholder="${I18n.system_please_input} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                            <label for="lastname" class="col-sm-2 control-label">{{ .I18n.schedule_type_fix_rate }}<font color="red">*</font></label>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_RATE" placeholder="{{ .I18n.system_please_input }} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                         </div>
                         <div class="schedule_conf schedule_conf_FIX_DELAY" style="display: none" >
-                            <label for="lastname" class="col-sm-2 control-label">${I18n.schedule_type_fix_delay}<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_DELAY" placeholder="${I18n.system_please_input} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                            <label for="lastname" class="col-sm-2 control-label">{{ .I18n.schedule_type_fix_delay }}<font color="red">*</font></label>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_DELAY" placeholder="{{ .I18n.system_please_input }} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                         </div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_job}</p>    <!-- 任务配置 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_job }}</p>    <!-- 任务配置 -->
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_gluetype}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_gluetype }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control glueType" name="glueType" >
 <!--                                <#list GlueTypeEnum as item>-->
@@ -281,21 +297,21 @@
                             </select>
                         </div>
                         <label for="firstname" class="col-sm-2 control-label">JobHandler<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorHandler" placeholder="${I18n.system_please_input}JobHandler" maxlength="100" ></div>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorHandler" placeholder="{{ .I18n.system_please_input }}JobHandler" maxlength="100" ></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorparam}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorparam }}<font color="black">*</font></label>
                         <div class="col-sm-10">
-                            <textarea class="textarea form-control" name="executorParam" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_executorparam}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                            <textarea class="textarea form-control" name="executorParam" placeholder="{{ .I18n.system_please_input }} {{ .I18n.jobinfo_field_executorparam }}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
                         </div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_advanced}</p>    <!-- 高级配置 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_advanced }}</p>    <!-- 高级配置 -->
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorRouteStrategy}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorRouteStrategy }}<font color="black">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="executorRouteStrategy" >
 <!--							<#list ExecutorRouteStrategyEnum as item>-->
@@ -304,12 +320,12 @@
                             </select>
                         </div>
 
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_childJobId}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="childJobId" placeholder="${I18n.jobinfo_field_childJobId_placeholder}" maxlength="100" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_childJobId }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="childJobId" placeholder="{{ .I18n.jobinfo_field_childJobId_placeholder }}" maxlength="100" ></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.misfire_strategy}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.misfire_strategy }}<font color="black">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="misfireStrategy" >
 <!--                                <#list MisfireStrategyEnum as item>-->
@@ -318,7 +334,7 @@
                             </select>
                         </div>
 
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorBlockStrategy}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorBlockStrategy }}<font color="black">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="executorBlockStrategy" >
 <!--								<#list ExecutorBlockStrategyEnum as item>-->
@@ -329,17 +345,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_timeout}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorTimeout" placeholder="${I18n.jobinfo_field_executorTimeout_placeholder}" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorFailRetryCount}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorFailRetryCount" placeholder="${I18n.jobinfo_field_executorFailRetryCount_placeholder}" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_timeout }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorTimeout" placeholder="{{ .I18n.jobinfo_field_executorTimeout_placeholder }}" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorFailRetryCount }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorFailRetryCount" placeholder="{{ .I18n.jobinfo_field_executorFailRetryCount_placeholder }}" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                     </div>
 
                     <hr>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-6">
-							<button type="submit" class="btn btn-primary"  >${I18n.system_save}</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+							<button type="submit" class="btn btn-primary"  >{{ .I18n.system_save }}</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{ .I18n.system_cancel }}</button>
 						</div>
 					</div>
 
@@ -355,7 +371,7 @@
 
                             @Override
                             public void execute() throws Exception {
-                                XxlJobHelper.log("XXL-JOB, Hello World.");
+                                XxlJobHelper.log("XXL-JOB-GO, Hello World.");
                             }
 
                         }
@@ -364,10 +380,10 @@
                         #!/bin/bash
                         echo "xxl-job: hello shell"
 
-                        echo "${I18n.jobinfo_script_location}：$0"
-                        echo "${I18n.jobinfo_field_executorparam}：$1"
-                        echo "${I18n.jobinfo_shard_index} = $2"
-                        echo "${I18n.jobinfo_shard_total} = $3"
+                        echo "{{ .I18n.jobinfo_script_location }}：$0"
+                        echo "{{ .I18n.jobinfo_field_executorparam }}：$1"
+                        echo "{{ .I18n.jobinfo_shard_index }} = $2"
+                        echo "{{ .I18n.jobinfo_shard_total }} = $3"
                         <#--echo "参数数量：$#"
                         for param in $*
                         do
@@ -386,10 +402,10 @@
 
                         print "xxl-job: hello python"
 
-                        print "${I18n.jobinfo_script_location}：", sys.argv[0]
-                        print "${I18n.jobinfo_field_executorparam}：", sys.argv[1]
-                        print "${I18n.jobinfo_shard_index}：", sys.argv[2]
-                        print "${I18n.jobinfo_shard_total}：", sys.argv[3]
+                        print "{{ .I18n.jobinfo_script_location }}：", sys.argv[0]
+                        print "{{ .I18n.jobinfo_field_executorparam }}：", sys.argv[1]
+                        print "{{ .I18n.jobinfo_shard_index }}：", sys.argv[2]
+                        print "{{ .I18n.jobinfo_shard_total }}：", sys.argv[3]
                         <#--for i in range(1, len(sys.argv)):
                             time.sleep(1)
                             print "参数", i, sys.argv[i]-->
@@ -408,10 +424,10 @@
 
                             echo "xxl-job: hello php  \n";
 
-                            echo "${I18n.jobinfo_script_location}：$argv[0]  \n";
-                            echo "${I18n.jobinfo_field_executorparam}：$argv[1]  \n";
-                            echo "${I18n.jobinfo_shard_index} = $argv[2]  \n";
-                            echo "${I18n.jobinfo_shard_total} = $argv[3]  \n";
+                            echo "{{ .I18n.jobinfo_script_location }}：$argv[0]  \n";
+                            echo "{{ .I18n.jobinfo_field_executorparam }}：$argv[1]  \n";
+                            echo "{{ .I18n.jobinfo_shard_index }} = $argv[2]  \n";
+                            echo "{{ .I18n.jobinfo_shard_total }} = $argv[3]  \n";
 
                             echo "Good bye!  \n";
                             exit(0);
@@ -424,10 +440,10 @@
 
                         var arguments = process.argv
 
-                        console.log("${I18n.jobinfo_script_location}: " + arguments[1])
-                        console.log("${I18n.jobinfo_field_executorparam}: " + arguments[2])
-                        console.log("${I18n.jobinfo_shard_index}: " + arguments[3])
-                        console.log("${I18n.jobinfo_shard_total}: " + arguments[4])
+                        console.log("{{ .I18n.jobinfo_script_location }}: " + arguments[1])
+                        console.log("{{ .I18n.jobinfo_field_executorparam }}: " + arguments[2])
+                        console.log("{{ .I18n.jobinfo_shard_index }}: " + arguments[3])
+                        console.log("{{ .I18n.jobinfo_shard_total }}: " + arguments[4])
                         <#--for (var i = 2; i < arguments.length; i++){
                             console.log("参数 %s = %s", (i-1), arguments[i]);
                         }-->
@@ -438,11 +454,11 @@
                     <textarea class="glueSource_powershell" style="display:none;" >
                         Write-Host "xxl-job: hello powershell"
 
-                        Write-Host "${I18n.jobinfo_script_location}: " $MyInvocation.MyCommand.Definition
-                        Write-Host "${I18n.jobinfo_field_executorparam}: "
+                        Write-Host "{{ .I18n.jobinfo_script_location }}: " $MyInvocation.MyCommand.Definition
+                        Write-Host "{{ .I18n.jobinfo_field_executorparam }}: "
                             if ($args.Count -gt 2) { $args[0..($args.Count-3)] }
-                        Write-Host "${I18n.jobinfo_shard_index}: " $args[$args.Count-2]
-                        Write-Host "${I18n.jobinfo_shard_total}: " $args[$args.Count-1]
+                        Write-Host "{{ .I18n.jobinfo_shard_index }}: " $args[$args.Count-2]
+                        Write-Host "{{ .I18n.jobinfo_shard_total }}: " $args[$args.Count-1]
 
                         Write-Host "Good bye!"
                         exit 0
@@ -458,14 +474,14 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-            	<h4 class="modal-title" >${I18n.jobinfo_field_update}</h4>
+            	<h4 class="modal-title" >{{ .I18n.jobinfo_field_update }}</h4>
          	</div>
          	<div class="modal-body">
 				<form class="form-horizontal form" role="form" >
 
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_base}</p>    <!-- 基础信息 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_base }}</p>    <!-- 基础信息 -->
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_jobgroup}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_jobgroup }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="jobGroup" >
 <!--                                <#list JobGroupList as group>-->
@@ -474,20 +490,20 @@
                             </select>
                         </div>
 
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_jobdesc}<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="jobDesc" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_jobdesc}" maxlength="50" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_jobdesc }}<font color="red">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="jobDesc" placeholder="{{ .I18n.system_please_input }} {{ .I18n.jobinfo_field_jobdesc }}" maxlength="50" ></div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_author}<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="author" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_author}" maxlength="50" ></div>
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_alarmemail}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="alarmEmail" placeholder="${I18n.jobinfo_field_alarmemail_placeholder}" maxlength="100" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_author }}<font color="red">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="author" placeholder="{{ .I18n.system_please_input}} {{ .I18n.jobinfo_field_author }}" maxlength="50" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_alarmemail }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="alarmEmail" placeholder="{{ .I18n.jobinfo_field_alarmemail_placeholder }}" maxlength="100" ></div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_schedule}</p>    <!-- 调度配置 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_schedule }}</p>    <!-- 调度配置 -->
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.schedule_type}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.schedule_type }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control scheduleType" name="scheduleType" >
 <!--                                <#list ScheduleTypeEnum as item>-->
@@ -501,23 +517,23 @@
                         </div>
                         <div class="schedule_conf schedule_conf_CRON" >
                             <label for="lastname" class="col-sm-2 control-label">Cron<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_CRON" placeholder="${I18n.system_please_input}Cron" maxlength="128" ></div>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_CRON" placeholder="{{ .I18n.system_please_input }}Cron" maxlength="128" ></div>
                         </div>
                         <div class="schedule_conf schedule_conf_FIX_RATE" style="display: none" >
-                            <label for="lastname" class="col-sm-2 control-label">${I18n.schedule_type_fix_rate}<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_RATE" placeholder="${I18n.system_please_input} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                            <label for="lastname" class="col-sm-2 control-label">{{ .I18n.schedule_type_fix_rate }}<font color="red">*</font></label>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_RATE" placeholder="{{ .I18n.system_please_input }} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                         </div>
                         <div class="schedule_conf schedule_conf_FIX_DELAY" style="display: none" >
-                            <label for="lastname" class="col-sm-2 control-label">${I18n.schedule_type_fix_delay}<font color="red">*</font></label>
-                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_DELAY" placeholder="${I18n.system_please_input} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                            <label for="lastname" class="col-sm-2 control-label">{{ .I18n.schedule_type_fix_delay }}<font color="red">*</font></label>
+                            <div class="col-sm-4"><input type="text" class="form-control" name="schedule_conf_FIX_DELAY" placeholder="{{ .I18n.system_please_input }} （ Second ）" maxlength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                         </div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_job}</p>    <!-- 任务配置 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_job }}</p>    <!-- 任务配置 -->
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_gluetype}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_gluetype }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control glueType" name="glueType" disabled >
 <!--                                <#list GlueTypeEnum as item>-->
@@ -526,21 +542,21 @@
                             </select>
                         </div>
                         <label for="firstname" class="col-sm-2 control-label">JobHandler<font color="red">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorHandler" placeholder="${I18n.system_please_input}JobHandler" maxlength="100" ></div>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorHandler" placeholder="{{ .I18n.system_please_input }}JobHandler" maxlength="100" ></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorparam}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorparam }}<font color="black">*</font></label>
                         <div class="col-sm-10">
-                            <textarea class="textarea form-control" name="executorParam" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_executorparam}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                            <textarea class="textarea form-control" name="executorParam" placeholder="{{ .I18n.system_please_input }} {{ .I18n.jobinfo_field_executorparam }}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
                         </div>
                     </div>
 
                     <br>
-                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">${I18n.jobinfo_conf_advanced}</p>    <!-- 高级配置 -->
+                    <p style="margin: 0 0 10px;text-align: left;border-bottom: 1px solid #e5e5e5;color: gray;">{{ .I18n.jobinfo_conf_advanced }}</p>    <!-- 高级配置 -->
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorRouteStrategy}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorRouteStrategy }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="executorRouteStrategy" >
 <!--                                <#list ExecutorRouteStrategyEnum as item>-->
@@ -549,12 +565,12 @@
                             </select>
                         </div>
 
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_childJobId}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="childJobId" placeholder="${I18n.jobinfo_field_childJobId_placeholder}" maxlength="100" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_childJobId }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="childJobId" placeholder="{{ .I18n.jobinfo_field_childJobId_placeholder }}" maxlength="100" ></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.misfire_strategy}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.misfire_strategy }}<font color="black">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="misfireStrategy" >
 <!--                                <#list MisfireStrategyEnum as item>-->
@@ -563,7 +579,7 @@
                             </select>
                         </div>
 
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorBlockStrategy}<font color="red">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorBlockStrategy }}<font color="red">*</font></label>
                         <div class="col-sm-4">
                             <select class="form-control" name="executorBlockStrategy" >
 <!--                                <#list ExecutorBlockStrategyEnum as item>-->
@@ -574,17 +590,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_timeout}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorTimeout" placeholder="${I18n.jobinfo_field_executorTimeout_placeholder}" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
-                        <label for="lastname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorFailRetryCount}<font color="black">*</font></label>
-                        <div class="col-sm-4"><input type="text" class="form-control" name="executorFailRetryCount" placeholder="${I18n.jobinfo_field_executorFailRetryCount_placeholder}" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_timeout }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorTimeout" placeholder="{{ .I18n.jobinfo_field_executorTimeout_placeholder }}" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
+                        <label for="lastname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorFailRetryCount }}<font color="black">*</font></label>
+                        <div class="col-sm-4"><input type="text" class="form-control" name="executorFailRetryCount" placeholder="{{ .I18n.jobinfo_field_executorFailRetryCount_placeholder }}" maxlength="4" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></div>
                     </div>
 
 					<hr>
 					<div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-							<button type="submit" class="btn btn-primary"  >${I18n.system_save}</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+							<button type="submit" class="btn btn-primary"  >{{ .I18n.system_save }}</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{ .I18n.system_cancel }}</button>
                             <input type="hidden" name="id" >
 						</div>
 					</div>
@@ -600,27 +616,27 @@
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" >${I18n.jobinfo_opt_run}</h4>
+                <h4 class="modal-title" >{{ .I18n.jobinfo_opt_run }}</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal form" role="form" >
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_executorparam}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobinfo_field_executorparam }}<font color="black">*</font></label>
                         <div class="col-sm-10">
-                            <textarea class="textarea form-control" name="executorParam" placeholder="${I18n.system_please_input}${I18n.jobinfo_field_executorparam}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                            <textarea class="textarea form-control" name="executorParam" placeholder="{{ .I18n.system_please_input }} {{ .I18n.jobinfo_field_executorparam }}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="firstname" class="col-sm-2 control-label">${I18n.jobgroup_field_registryList}<font color="black">*</font></label>
+                        <label for="firstname" class="col-sm-2 control-label">{{ .I18n.jobgroup_field_registryList }}<font color="black">*</font></label>
                         <div class="col-sm-10">
-                            <textarea class="textarea form-control" name="addressList" placeholder="${I18n.jobinfo_opt_run_tips}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
+                            <textarea class="textarea form-control" name="addressList" placeholder="{{ .I18n.jobinfo_opt_run_tips }}" maxlength="512" style="height: 63px; line-height: 1.2;"></textarea>
                         </div>
                     </div>
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="button" class="btn btn-primary ok" >${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+                            <button type="button" class="btn btn-primary ok" >{{ .I18n.system_save }}</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ .I18n.system_cancel }}</button>
                             <input type="hidden" name="id" >
                         </div>
                     </div>
@@ -653,17 +669,14 @@
 
 {{/* common*/}}
 <script src="{{ .contextPath }}/static/js/common.1.js"></script>
-<script>
-    var base_url = '{{ .contextPath }}';
-    var I18n = "";
-</script>
+
 <!-- DataTables -->
 <script src="{{ .contextPath }}/static/adminlte/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ .contextPath }}/static/adminlte/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- moment -->
 <script src="{{ .contextPath }}/static/adminlte/bower_components/moment/moment.min.js"></script>
 <!-- cronGen -->
-<!--<script src="{{ .contextPath }}/static/plugins/cronGen/cronGen<#if I18n.admin_i18n?default('')?length gt 0 >_${I18n.admin_i18n}</#if>.js"></script>-->
+<!--<script src="{{ .contextPath }}/static/plugins/cronGen/cronGen<#if I18n.admin_i18n?default('')?length gt 0 >_{{ .I18n.admin_i18n }}</#if>.js"></script>-->
 <script src="{{ .contextPath }}/static/plugins/cronGen/cronGen.js"></script>
 <script src="{{ .contextPath }}/static/js/jobinfo.index.1.js"></script>
 </body>

@@ -38,30 +38,30 @@ type JobInfo struct {
 }
 
 type JobGroup struct {
-	Id          int64     `xorm:"id"`
-	AppName     string    `xorm:"app_name"`
-	Title       string    `xorm:"title"`
-	AddressType int32     `xorm:"address_type"`
-	AddressList string    `xorm:"address_list"`
-	UpdateTime  time.Time `xorm:"update_time"`
+	Id          int64     `xorm:"id" json:"id"`
+	AppName     string    `xorm:"app_name" json:"appname"`
+	Title       string    `xorm:"title" json:"title"`
+	AddressType int32     `xorm:"address_type" json:"addressType"`
+	AddressList string    `xorm:"address_list" json:"addressList"`
+	UpdateTime  time.Time `xorm:"update_time" json:"updateTime"`
 }
 
 type JobLog struct {
-	Id                     int64     `xorm:"id"`
-	JobGroup               int32     `xorm:"job_group"`
-	JobId                  int32     `xorm:"job_id"`
-	ExecutorAddress        string    `xorm:"executor_address"`
-	ExecutorHandler        string    `xorm:"executor_handler"`
-	ExecutorParam          string    `xorm:"executor_param"`
-	ExecutorShardingParam  string    `xorm:"executor_sharding_param"`
-	ExecutorFailRetryCount int32     `xorm:"executor_fail_retry_count"`
-	TriggerTime            time.Time `xorm:"trigger_time"`
-	TriggerCode            int32     `xorm:"trigger_code"`
-	TriggerMsg             string    `xorm:"trigger_msg"`
+	Id                     int64     `xorm:"id" json:"id"`
+	JobGroup               int32     `xorm:"job_group" json:"jobGroup"`
+	JobId                  int32     `xorm:"job_id" json:"jobId"`
+	ExecutorAddress        string    `xorm:"executor_address" json:"executorAddress"`
+	ExecutorHandler        string    `xorm:"executor_handler" json:"executorHandler"`
+	ExecutorParam          string    `xorm:"executor_param" json:"executorParam"`
+	ExecutorShardingParam  string    `xorm:"executor_sharding_param" json:"executorShardingParam"`
+	ExecutorFailRetryCount int32     `xorm:"executor_fail_retry_count" json:"executorFailRetryCount"`
+	TriggerTime            time.Time `xorm:"trigger_time" json:"triggerTime"`
+	TriggerCode            int32     `xorm:"trigger_code" json:"triggerCode"`
+	TriggerMsg             string    `xorm:"trigger_msg" json:"triggerMsg"`
 	HandleTime             time.Time `xorm:"handle_time"`
-	HandleCode             int32     `xorm:"handle_code"`
-	HandleMsg              string    `xorm:"handle_msg"`
-	AlarmStatus            int32     `xorm:"alarm_status"`
+	HandleCode             int32     `xorm:"handle_code" json:"handleCode"`
+	HandleMsg              string    `xorm:"handle_msg" json:"handleMsg"`
+	AlarmStatus            int32     `xorm:"alarm_status" json:"alarmStatus"`
 }
 
 type JobUser struct {
@@ -70,4 +70,13 @@ type JobUser struct {
 	Password   string `xorm:"password" json:"password"`
 	Role       int32  `xorm:"role" json:"role"`
 	Permission string `xorm:"permission" json:"permission"`
+}
+
+type JobLogReport struct {
+	Id           int64     `xorm:"id" json:"id"`
+	TriggerDay   time.Time `xorm:"trigger_day" json:"triggerDay"`
+	RunningCount int32     `xorm:"running_count" json:"runningCount"`
+	SucCount     int32     `xorm:"suc_count" json:"sucCount"`
+	FailCount    int32     `xorm:"fail_count" json:"failCount"`
+	UpdateTime   time.Time `xorm:"update_time" json:"updateTime"`
 }

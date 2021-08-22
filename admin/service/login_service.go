@@ -44,6 +44,19 @@ func DoLogin(username, password string) (string, error) {
 	return token, nil
 }
 
+func GetUserByUsername(username string) (*model.JobUser, error) {
+	users := make([]model.JobUser, 0)
+	err := db.DbEngine.Table("xxl_job_user").Where("username = ?", username).Find(&users)
+	if err != nil || len(users) <= 0 {
+		return nil, err
+	}
+
+	if len(users) <= 0 {
+		return nil, err
+	}
+	return &users[0], nil
+}
+
 func makeToken(user *model.JobUser) (string, error) {
 	bytes, err := json.Marshal(user)
 	if err != nil {

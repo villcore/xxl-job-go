@@ -97,7 +97,6 @@ $(function() {
 						"visible" : true,
                         "width":'10%',
 						"render": function ( data, type, row ) {
-
 							var jobhandler = '';
                             if (row.executorHandler) {
                                 jobhandler = "<br>JobHandler：" + row.executorHandler;

@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"villcore.com/admin/misc"
 	"villcore.com/admin/service"
 )
 
@@ -55,7 +56,7 @@ func updateJobGroupOnLineRegistry() {
 	// 2. remove all dead registry
 	// 3. get all online registry
 	// 4. update job group with online registry
-	jobGroups, err := service.GetJobGroupByAddressType(int32(ADDRESS_AUTO_REGISTER))
+	jobGroups, err := service.GetJobGroupByAddressType(int32(misc.ADDRESS_AUTO_REGISTER))
 	if err != nil {
 		log.Println("Get auto register job group error ", err)
 	}

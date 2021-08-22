@@ -14,6 +14,10 @@ func NewFailReturnT(content interface{}) ReturnT {
 	return ReturnT{Code: 500, Content: content}
 }
 
+func NewFailReturnTWithMsg(msg string) ReturnT {
+	return ReturnT{Code: 500, Msg: msg, Content: nil}
+}
+
 type IdleBeatParam struct {
 	JobId int32 `json:"jobId"`
 }

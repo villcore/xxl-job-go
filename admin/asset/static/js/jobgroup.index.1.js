@@ -78,7 +78,6 @@ $(function() {
 							'       <li><a href="javascript:void(0);" class="opt_del" >'+ I18n.system_opt_del +'</a></li>\n' +
 							'     </ul>\n' +
 							'   </div>';
-
 						return html;
 					};
 				}

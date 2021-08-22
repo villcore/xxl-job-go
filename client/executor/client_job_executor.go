@@ -109,8 +109,10 @@ func (e *XxlJobSimpleExecutor) Start() error {
 		timeoutSecond: 3,
 	}
 
+	e.registerExecutor(adminBiz)
+
 	// register this executor
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(30 * time.Second)
 	e.registryTicker = ticker
 	registryCtx := e.ctx
 	// defer cancel()
@@ -118,15 +120,7 @@ func (e *XxlJobSimpleExecutor) Start() error {
 		for {
 			select {
 			case <-ticker.C:
-				{
-					registryParam := api.RegistryParam{
-						RegistryGroup: "EXECUTOR",
-						RegistryKey:   e.jobConfig.Appname,
-						RegistryValue: e.jobConfig.Address,
-					}
-					returnT := adminBiz.Registry(registryParam)
-					log.Println("Registry executor client ", returnT)
-				}
+				e.registerExecutor(adminBiz)
 
 			case <-registryCtx.Done():
 				{
@@ -137,6 +131,18 @@ func (e *XxlJobSimpleExecutor) Start() error {
 		}
 	}()
 	return nil
+}
+
+func (e *XxlJobSimpleExecutor) registerExecutor(adminBiz ClientAdminApiImpl) {
+	{
+		registryParam := api.RegistryParam{
+			RegistryGroup: "EXECUTOR",
+			RegistryKey:   e.jobConfig.Appname,
+			RegistryValue: e.jobConfig.Address,
+		}
+		returnT := adminBiz.Registry(registryParam)
+		log.Println("Registry executor client ", returnT)
+	}
 }
 
 func (e *XxlJobSimpleExecutor) Destroy() error {
@@ -307,5 +313,5 @@ func (e *XxlJobSimpleExecutor) removeJob(jobId int32) (*Job, error) {
 		delete(e.runtimeJobHandlerMapping, jobId)
 		return &runtimeJob, nil
 	}
-	return nil, errors.New("Not found runtime job '" + strconv.Itoa(int(jobId)) + "'")
+	return nil, errors.New("Not found runtime job '" + strconv.FormatInt(int64(jobId), 10) + "'")
 }

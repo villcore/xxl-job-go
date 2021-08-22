@@ -17,8 +17,8 @@ func init() {
 	if err != nil {
 		log.Fatalf("Create db %v engine failed %v \n", url, err)
 	}
-	engine.ShowSQL(true)
-	engine.ShowExecTime(true)
+	//engine.ShowSQL(true)
+	//engine.ShowExecTime(true)
 	DbEngine = engine
 }
 

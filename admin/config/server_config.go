@@ -11,9 +11,10 @@ import (
 
 var ServerConfig *Config
 var I18n map[string]string
+var I18nJson string
 
 type Config struct {
-	ServerPort         int32  `json:"server.port"`
+	ServerPort         int    `json:"server.port"`
 	ServerContextPath  string `json:"server.context-path"`
 	DataSourceUrl      string `json:"datasource.url"`
 	DataSourceUsername string `json:"datasource.username"`
@@ -60,6 +61,7 @@ func initI18n() {
 	file.Close()
 
 	prop := map[string]string{}
+
 	lines := string(bytes)
 	for _, line := range strings.Split(lines, "\n") {
 		if utf8.RuneCountInString(lines) <= 0 {
@@ -77,4 +79,6 @@ func initI18n() {
 		prop[parts[0]] = parts[1]
 	}
 	I18n = prop
+	b, _ := json.Marshal(I18n)
+	I18nJson = string(b)
 }

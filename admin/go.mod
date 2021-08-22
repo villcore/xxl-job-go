@@ -17,16 +17,19 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
-	github.com/ugorji/go/codec v1.2.6 // indirect
+	github.com/tidwall/pretty v1.2.0 // indirect
+	github.com/ugorji/go v1.2.6 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	villcore.com/common v0.0.0
 	xorm.io/builder v0.3.8 // indirect
-	 villcore.com/common v0.0.0
 )
 
 replace villcore.com/admin => ../admin
+
 replace villcore.com/common => ../common
+
 go 1.13

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+	"villcore.com/admin/misc"
 	"villcore.com/admin/service"
 	"villcore.com/common/api"
 	"villcore.com/common/model"
@@ -23,7 +24,7 @@ func init() {
 
 type TriggerJobParam struct {
 	JobId                 int32
-	TriggerType           TriggerType
+	TriggerType           misc.TriggerType
 	FailRetryCount        int
 	ExecutorShardingParam string
 	ExecutorParam         string
@@ -36,18 +37,22 @@ func TriggerJob(param *TriggerJobParam) error {
 		return err
 	}
 
+	if jobInfo == nil {
+		return nil
+	}
+
 	if param.ExecutorParam != "" {
 		jobInfo.ExecutorParam = param.ExecutorParam
 	}
 
-	jobGroup, err := service.GetJobGroup(jobInfo.TriggerStatus)
+	jobGroup, err := service.GetJobGroup(jobInfo.JobGroup)
 	if err != nil {
 		return err
 	}
 
 	addressListStr := strings.TrimSpace(param.AddressList)
 	if utf8.RuneCountInString(addressListStr) > 0 {
-		jobGroup.AddressType = int32(ADDRESS_MANUAL_REGISTER)
+		jobGroup.AddressType = int32(misc.ADDRESS_MANUAL_REGISTER)
 		jobGroup.AddressList = addressListStr
 	}
 
@@ -89,7 +94,7 @@ func parseRegistryExecutorList(registryListStr string) []string {
 }
 
 func processTrigger(group *model.JobGroup, jobInfo *model.JobInfo,
-	failRetryCount int, triggerType TriggerType,
+	failRetryCount int, triggerType misc.TriggerType,
 	shardingIndex int, shardingTotal int) {
 
 	// save log

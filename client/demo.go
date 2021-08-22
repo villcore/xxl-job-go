@@ -47,6 +47,7 @@ func main() {
 		},
 		func() {
 			log.Println("demoJobHandler destroy func 2 ")
+			log.Println("==============================")
 		})
 
 	log.Println("Start simpleExecutor.")

@@ -28,22 +28,22 @@ func Route(routerType RouterType, triggerParam *api.TriggerParam, addressList []
 		return addressList[len(addressList)-1], nil
 
 		// TODO
-	case ROUTER_ROUND:
-		return "", nil
-	case ROUTER_RANDOM:
-		return "", nil
-	case ROUTER_CONSISTENT_HASH:
-		return "", nil
-	case ROUTER_LEAST_FREQUENTLY_USED:
-		return "", nil
-	case ROUTER_LEAST_RECENTLY_USED:
-		return "", nil
-	case ROUTER_FAILOVER:
-		return "", nil
-	case ROUTER_BUSYOVER:
-		return "", nil
-	case ROUTER_SHARDING_BROADCAST:
-		return "", nil
+	//case ROUTER_ROUND:
+	//	return "", nil
+	//case ROUTER_RANDOM:
+	//	return "", nil
+	//case ROUTER_CONSISTENT_HASH:
+	//	return "", nil
+	//case ROUTER_LEAST_FREQUENTLY_USED:
+	//	return "", nil
+	//case ROUTER_LEAST_RECENTLY_USED:
+	//	return "", nil
+	//case ROUTER_FAILOVER:
+	//	return "", nil
+	//case ROUTER_BUSYOVER:
+	//	return "", nil
+	//case ROUTER_SHARDING_BROADCAST:
+	//	return "", nil
 	default:
 		return "", errors.New("Invalid router type " + string(routerType))
 	}
